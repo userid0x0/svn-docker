@@ -8,26 +8,32 @@ A complete tutorial on how to build this image, and how to run the container is 
 # Running Commands
 To run the image, you can use the following command:
 ```
-docker run -d --name svn-server -p 80:80 -p 3690:3690 -v <hostpath>:/home/svn -v svn_config:/etc/subversion -v svnadmin_config:/opt/svnadmin/data elleflorio/svn-server
+docker run -d \
+    --name svn-server \
+    -p 80:80 \
+    -p 3690:3690 \
+    -v `pwd`/data:/data \
+    elleflorio/svn-server
 ```
-`/home/svn` stores your repositories and can use either bind mount or named volume. `/etc/subversion` stores subversion configuration and `/opt/svnadmin/data` stores SVNADMIN configuration and both **MUST** use named volume.
 
-# Configuration
-**You need to setup username and password** for the access via WebDav protocol. You can use the following command from your host machine:
-```
-docker exec -t svn-server htpasswd -b /etc/subversion/passwd <username> <password>
-```
-To verify that everything is up and running, open your browser and connect to `http://localhost/svn`. The system should ask you for the username and password, then it will show you an empty folder (no repos yet!).
+- `<data>/svnadmin` - will be keep all repositories in subfolder in data
+- `<data>/repositories` - will be keep all repositories in subfolder in data
+- `<data>/subversion` - configurations for subversion (passwd && subversion-access-control)
+
+In first start will be inited automaticly all default folders/files/password - to easy start.
+
+so:
+
+- http://localhost/svn - with repositories
+- http://localhost/svnadmin - configuration (login: `admin` / password: `admin` **Don't foget change this** )
+
+
+
 Check also that the custom protocol is working fine: go to your terminal and type `svn info svn://localhost:3690`. The system should connect to the server and tell you that is not able to find any repository.
 For further information on how to configure Subversion, please refer to the [official web page](https://subversion.apache.org/).
 
-# Alternative configuration via SVNADMIN
-the image provides a graphical ui using the [SVNADMIN](https://github.com/mfreiholz/iF.SVNAdmin) interface via `http://localhost/svnadmin`.
-You'll be prompted with a setup page, remember to test every step on the page then save the configuration.
 
-# How to contribute
-I'm super happy if you want to contribute! I do my best to keep this image updated and solve the issues that may arise, but I'm not much an operations guy, and I have very limited free time. :sweat_smile:
+## TODO:
 
-If you find something that can be improved or the solution to some issue, just comment the issue to notify that you will handle it, and then submit a pull request. I will then merge it and publish the updated image in the Docker Hub. :wink:
-
-Thank you! :smile:
+- fix to deny access `/svnadmin/data/`
+- fix access via `svn://` by port 3690 (some problem with access)
