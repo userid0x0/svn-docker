@@ -20,7 +20,7 @@ docker run \
     -p 80:80 \
     -e SVN_SERVER_REPOSITORIES_URL=/svn \
     -v `pwd`/data:/data \
-    elleflorio/svn-server
+    sea5kg/svn-server
 ```
 
 - `<data>/svnadmin` - will be keep all repositories in subfolder in data
