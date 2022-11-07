@@ -18,9 +18,8 @@ services:
     image: sea5kg/svn-server
     environment:
       - SVN_SERVER_REPOSITORIES_URL: /source/svn
-    ports:
-      - "8011:80" # test web port 
-      - "3690:3690" #  svn protocol!
+    # ports:
+    #   - "8011:80" # test web port 
     volumes:
       - "./svn/svnadmin_data:/opt/svnadmin/data:rw"
       - "./svn/repo:/home/svn"

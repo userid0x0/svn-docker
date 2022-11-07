@@ -1,4 +1,6 @@
-[![Docker Image](https://img.shields.io/badge/docker%20image-available-green.svg)](https://hub.docker.com/r/elleflorio/svn-server/)
+[![Docker Image](https://img.shields.io/badge/docker%20image-available-green.svg)](https://hub.docker.com/r/sea5kg/svn-server/)
+
+
 
 It's a fork of https://github.com/elleFlorio/svn-docker
 
@@ -16,6 +18,7 @@ To run the image, you can use the following command:
 docker run \
     --name svn-server \
     -p 80:80 \
+    -e SVN_SERVER_REPOSITORIES_URL=/svn \
     -v `pwd`/data:/data \
     elleflorio/svn-server
 ```
