@@ -40,4 +40,4 @@ ADD svn-server/etc/apache2/conf.d/dav_svn.conf /etc/apache2/conf.d/dav_svn.conf
 # USER apache
 
 # Expose ports for http and custom protocol access
-EXPOSE 80 3690
+EXPOSE 80

@@ -15,11 +15,11 @@ check_ret() {
     fi
 }
 
-docker rmi elleflorio/svn-server
+docker rmi sea5kg/svn-server
 
-docker build -t elleflorio/svn-server:latest .
+docker build -t sea5kg/svn-server:latest .
 check_ret $?
 
 
 # for test run
-# docker run --rm --name svn-server -p 80:80 -p 3690:3690 -v `pwd`/data:/data elleflorio/svn-server
+# docker run --rm --name svn-server -p 80:80 -v `pwd`/data:/data sea5kg/svn-server

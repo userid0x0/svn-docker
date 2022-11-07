@@ -15,7 +15,7 @@ services:
     networks:
       - example_svn_server_net
   svn_server:
-    image: elleflorio/svn-server
+    image: sea5kg/svn-server
     environment:
       - SVN_SERVER_REPOSITORIES_URL: /source/svn
     ports:
