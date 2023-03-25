@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv sh
 
 # From https://github.com/smebberson/docker-alpine/tree/master/alpine-apache
 
@@ -13,8 +13,10 @@ fi
 #     mkdir -p /data/repositories
 # fi
 
-ln -s /data/svnadmin /opt/svnadmin/data
-chmod 777 -R /opt/svnadmin/data
+if [ ! -e /opt/svnadmin/data ]; then
+    ln -s /data/svnadmin /opt/svnadmin/data
+    chmod 777 -R /opt/svnadmin/data
+fi
 
 if [ ! -f /opt/svnadmin/data/config.ini ]; then
     cp /opt/default_data/svnadmin/config.ini /opt/svnadmin/data/config.ini

@@ -1,24 +1,21 @@
 # Alpine Linux with s6 service management
-FROM smebberson/alpine-base:3.2.0
+FROM crazymax/alpine-s6:edge
 
 	# Install Apache2 and other stuff needed to access svn via WebDav
 	# Install svn
 	# Installing utilities for SVNADMIN frontend
-	# Create required folders
-	# Create the authentication file for http access
-	# Getting SVNADMIN interface
-RUN apk add --no-cache apache2 apache2-utils apache2-webdav mod_dav_svn &&\
-	apk add --no-cache subversion &&\
-	apk add --no-cache wget unzip php7 php7-apache2 php7-session php7-json php7-ldap &&\
-	apk add --no-cache php7-xml &&\	
-	sed -i 's/;extension=ldap/extension=ldap/' /etc/php7/php.ini &&\
+RUN apk add --no-cache apache2 apache2-ctl apache2-utils apache2-webdav mod_dav_svn &&\
+	apk add --no-cache subversion subversion-tools &&\
+	apk add --no-cache wget unzip &&\
+	apk add --no-cache php82 php82-apache2 php82-session php82-json php82-ldap php82-xml &&\
+	sed -i 's/;extension=ldap/extension=ldap/' /etc/php82/php.ini &&\
 	mkdir -p /run/apache2/
 
 # Solve a security issue (https://alpinelinux.org/posts/Docker-image-vulnerability-CVE-2019-5021.html)	
 RUN sed -i -e 's/^root::/root:!:/' /etc/shadow
 
 # Basicly from https://github.com/mfreiholz/iF.SVNAdmin/archive/stable-1.6.2.zip
-# + patches
+# + patches for PHP8
 ADD svn-server/opt/default_data /opt/default_data
 ADD iF.SVNAdmin /opt/svnadmin
 RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin &&\

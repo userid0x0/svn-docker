@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv sh
 
 # From https://github.com/smebberson/docker-alpine/tree/master/alpine-apache
 
