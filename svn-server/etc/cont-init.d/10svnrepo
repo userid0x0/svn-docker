@@ -1,0 +1,10 @@
+#!/command/with-contenv sh
+# Create SVN repository root
+
+# /data/respositories: persistent storage for SVN repo
+if [ ! -d /data/repositories ]; then
+    mkdir -p /data/repositories
+fi
+
+chmod 777 /data/repositories
+

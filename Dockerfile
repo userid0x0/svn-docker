@@ -21,6 +21,9 @@ ADD iF.SVNAdmin /opt/svnadmin
 RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin &&\
 	rm -rf /opt/svnadmin/data
 
+# Add oneshot scripts
+ADD svn-server/etc/cont-init.d /etc/cont-init.d/
+	
 # Add services configurations
 ADD svn-server/etc/services.d/apache2/run /etc/services.d/apache2/run
 ADD svn-server/etc/services.d/subversion/run /etc/services.d/subversion/run
