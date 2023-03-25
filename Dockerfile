@@ -35,7 +35,8 @@ ADD svn-server/etc/services.d /etc/services.d/
 
 # default environment paths
 ENV SVN_SERVER_REPOSITORIES_URL=/svn \
-	WEBSVN_URL=/websvn
+	WEBSVN_URL=/websvn \
+	WEBSVN_AUTH=2
 
 # Add WebDav configuration
 ADD svn-server/etc/apache2/conf.d/dav_svn.conf /etc/apache2/conf.d/dav_svn.conf

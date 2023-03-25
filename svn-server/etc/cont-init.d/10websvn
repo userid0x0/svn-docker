@@ -17,6 +17,17 @@ if [ ! -d /data/websvn ]; then
     mkdir -p /data/websvn
 fi
 
+if [ $(printf '%d' ${WEBSVN_AUTH} 2>/dev/null||:;) -ge 1 ]; then
+  cat << EOF > /etc/apache2/conf.d/websvn.conf
+<Location ${WEBSVN_URL}>
+     AuthType Basic
+     AuthName "Subversion Repository"
+     AuthUserFile /data/subversion/passwd
+     Require valid-user
+</Location>
+EOF
+fi
+
 # create link in htdocs
 if [ ! -e /var/www/localhost/htdocs${WEBSVN_URL} ]; then
     ln -s /opt/websvn /var/www/localhost/htdocs${WEBSVN_URL}
