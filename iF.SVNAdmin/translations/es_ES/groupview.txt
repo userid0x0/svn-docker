@@ -1,3 +1,0 @@
-"On this page you can see all assigned users to this group.","En esta página puedes ver todos los usuarios asignados a este grupo."
-"Users of group","Usuarios del grupo"
-"Permissions of group","Permisos del grupo"
