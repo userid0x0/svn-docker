@@ -21,15 +21,21 @@ ADD iF.SVNAdmin /opt/svnadmin
 RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin &&\
 	rm -rf /opt/svnadmin/data
 
+# Prepare WebSVN
+ADD https://github.com/websvnphp/websvn/archive/refs/tags/2.8.1.zip /opt/websvn-2.8.1.zip
+RUN unzip /opt/websvn-2.8.1.zip -d /opt &&\
+	rm /opt/websvn-2.8.1.zip &&\
+	mv /opt/websvn-2.8.1 /opt/websvn
+
 # Add oneshot scripts
 ADD svn-server/etc/cont-init.d /etc/cont-init.d/
-	
+
 # Add services configurations
-ADD svn-server/etc/services.d/apache2/run /etc/services.d/apache2/run
-ADD svn-server/etc/services.d/subversion/run /etc/services.d/subversion/run
+ADD svn-server/etc/services.d /etc/services.d/
 
 # default environment paths
-ENV SVN_SERVER_REPOSITORIES_URL=/svn
+ENV SVN_SERVER_REPOSITORIES_URL=/svn \
+	WEBSVN_URL=/websvn
 
 # Add WebDav configuration
 ADD svn-server/etc/apache2/conf.d/dav_svn.conf /etc/apache2/conf.d/dav_svn.conf

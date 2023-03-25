@@ -1,0 +1,32 @@
+#!/command/with-contenv sh
+# Create WebSVN configuration
+
+# early out if WEBSVN_URL is not configured
+if [ -z "${WEBSVN_URL}" ]; then
+    exit 0
+fi
+
+# ensure it starts with a slash
+echo "${WEBSVN_URL}" | grep ^/ > /dev/null
+if [ ${?} != 0 ]; then
+    WEBSVN_URL="/${WEBSVN_URL}"
+fi
+
+# /data/websvn: persistent storage for websvn configuration
+if [ ! -d /data/websvn ]; then
+    mkdir -p /data/websvn
+fi
+
+# create link in htdocs
+if [ ! -e /var/www/localhost/htdocs${WEBSVN_URL} ]; then
+    ln -s /opt/websvn /var/www/localhost/htdocs${WEBSVN_URL}
+fi
+
+# copy out configuration template
+cp /opt/websvn/include/distconfig.php /data/websvn/distconfig.php
+
+if [ ! -f /data/websvn/config.php ]; then
+    cp /opt/default_data/websvn/config.php /data/websvn/config.php
+fi
+
+ln -s /data/websvn/config.php /opt/websvn/include/config.php
