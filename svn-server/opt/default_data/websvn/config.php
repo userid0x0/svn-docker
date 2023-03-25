@@ -240,7 +240,10 @@ $config->addTemplatePath($locwebsvnreal.'/templates/Elegant/');
 // rights via WebSVN. For this to work, you'll need to set up the same Apache based authentication
 // to the WebSVN (or browse) directory as you have for Subversion itself. More information can be
 // found in install.txt
-
+if (empty(getenv('WEBSVN_AUTH'))) {}
+elseif (intval(getenv('WEBSVN_AUTH')) >= 2) {
+  $config->useAccessFile('/data/subversion/subversion-access-control');
+}
 // $config->useAccessFile('/path/to/accessfile'); // Global access file
 
 // You may also specify a per repository access file by uncommenting and copying the following
