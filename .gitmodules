@@ -1,0 +1,4 @@
+[submodule "iF.SVNAdmin"]
+	path = iF.SVNAdmin
+	url = git@github.com:userid0x0/iF.SVNAdmin.git
+	branch = php8
