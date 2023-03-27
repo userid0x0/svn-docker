@@ -27,6 +27,13 @@ RUN unzip /opt/websvn-2.8.1.zip -d /opt &&\
 	rm /opt/websvn-2.8.1.zip &&\
 	mv /opt/websvn-2.8.1 /opt/websvn
 
+# 
+ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/repos-style.zip
+RUN unzip /opt/repos-style.zip -d /opt &&\
+	rm /opt/repos-style.zip &&\
+	mv /opt/repos-style-master /opt/repos-style &&\
+	ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web
+
 # Add oneshot scripts
 ADD svn-server/etc/cont-init.d /etc/cont-init.d/
 
