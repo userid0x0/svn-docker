@@ -1,10 +1,30 @@
 #!/command/with-contenv sh
 # Create WebSVN configuration
 
+# returns 0 in case of non-int
+# int(){ printf '%d' ${1:-} 2>/dev/null || :; }
+# returns [empty_string] in case of non-int
+int(){ expr 0 + ${1:-} 2>/dev/null||:; }
+
+# remove trailing slash
+WEBSVN_URL=$(echo "$WEBSVN_URL" | sed 's_/$__g')
+
 # early out if WEBSVN_URL is not configured
 if [ -z "${WEBSVN_URL}" ]; then
+    echo "Info: Disable WebSVN as WEBSVN_URL is empty"
     exit 0
 fi
+
+case $(int ${WEBSVN_AUTH}) in
+0 | 1 | 2)
+    # valid values, nothing todo
+    ;;
+*)
+    echo "Error: invalid value WEBSVN_AUTH='${WEBSVN_AUTH}'"
+    echo "Info: disable WebSVN"
+    exit 1
+    ;;
+esac
 
 # ensure it starts with a slash
 echo "${WEBSVN_URL}" | grep ^/ > /dev/null
@@ -17,7 +37,8 @@ if [ ! -d /data/websvn ]; then
     mkdir -p /data/websvn
 fi
 
-if [ $(printf '%d' ${WEBSVN_AUTH} 2>/dev/null||:;) -ge 1 ]; then
+# enable apache authentification IF WEBSVN_AUTH >= 1
+if [ $(int ${WEBSVN_AUTH}) -ge 1 ]; then
   cat << EOF > /etc/apache2/conf.d/websvn.conf
 <Location ${WEBSVN_URL}>
      AuthType Basic
@@ -33,9 +54,10 @@ if [ ! -e /var/www/localhost/htdocs${WEBSVN_URL} ]; then
     ln -s /opt/websvn /var/www/localhost/htdocs${WEBSVN_URL}
 fi
 
-# copy out configuration template
+# copy configuration template
 cp /opt/websvn/include/distconfig.php /data/websvn/distconfig.php
 
+# copy default configuration if not yet existing e.g. initial start
 if [ ! -f /data/websvn/config.php ]; then
     cp /opt/default_data/websvn/config.php /data/websvn/config.php
 fi
