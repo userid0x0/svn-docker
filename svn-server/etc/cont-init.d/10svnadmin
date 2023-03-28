@@ -24,4 +24,13 @@ if [ ! -f /opt/svnadmin/data/config.tpl.ini ]; then
     cp /opt/default_data/svnadmin/config.tpl.ini /opt/svnadmin/data/config.tpl.ini
 fi
 
+# create .htaccess file for data folder
+if [ ! -f /opt/svnadmin/data/.htaccess ]; then
+  cat << EOF > /opt/svnadmin/data/.htaccess
+<Files *>
+  deny from all
+</Files>
+EOF
+fi
+
 chmod 777 -R /opt/svnadmin/data
