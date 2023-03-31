@@ -1,17 +1,52 @@
 # Alpine Linux with s6 service management
-FROM crazymax/alpine-s6:edge
+FROM crazymax/alpine-s6:3.17-3.1.1.2 AS builder
+
+# https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package
+
+RUN apk add --no-cache alpine-sdk sudo git
+
+# setup the build user packager in container
+# allow sudo for all users
+RUN adduser -D packager \
+    && addgroup packager abuild \
+    &&  echo "%abuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/abuild
+
+# setup directory for built packages
+RUN mkdir -p /var/cache/distfiles \
+    && chmod a+w /var/cache/distfiles \
+    && chgrp abuild /var/cache/distfiles \
+    && chmod g+w /var/cache/distfiles
+
+# switch user within container
+USER packager
+
+# configure the security keys
+RUN abuild-keygen -a -i -n
+
+# build subversion tag `v20230208` as it includes subversion-tools e.g. svnauthz
+RUN git clone --branch v20230208 --single-branch --depth 1 https://gitlab.alpinelinux.org/alpine/aports.git ~/aports
+RUN cd ~/aports/main/subversion \
+    && sudo apk update \
+    && abuild -r
+
+FROM crazymax/alpine-s6:3.17-3.1.1.2
+
+# copy previously generated public key
+# copy previously compiles svnserver packages
+COPY --from=builder /home/packager/.abuild/*.pub /etc/apk/keys
+COPY --from=builder /home/packager/packages/main/x86_64/* /tmp
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
 # Installing utilities for SVNADMIN frontend
 # Enable global .htaccess (AllowOverride All)
 # Enable LDAP for PHP
-RUN apk add --no-cache apache2 apache2-ctl apache2-utils apache2-webdav mod_dav_svn &&\
-	apk add --no-cache subversion subversion-tools &&\
+RUN apk add --no-cache apache2 apache2-ctl apache2-utils apache2-webdav /tmp/mod_dav_svn-1*apk &&\
+	apk add --no-cache /tmp/subversion-1.*apk /tmp/subversion-libs-1.*apk /tmp/subversion-tools-1.*apk &&\
 	apk add --no-cache wget unzip &&\
-	apk add --no-cache php82 php82-apache2 php82-session php82-json php82-ldap php82-xml &&\
+	apk add --no-cache php81 php81-apache2 php81-session php81-json php81-ldap php81-xml &&\
 	sed -i "\#Directory \"/var/www/localhost/htdocs#,\#Directory# s#AllowOverride None#AllowOverride All#g" /etc/apache2/httpd.conf &&\
-	sed -i 's/;extension=ldap/extension=ldap/' /etc/php82/php.ini &&\
+	sed -i 's/;extension=ldap/extension=ldap/' /etc/php81/php.ini &&\
 	mkdir -p /run/apache2/
 
 # Solve a security issue (https://alpinelinux.org/posts/Docker-image-vulnerability-CVE-2019-5021.html)	
@@ -30,7 +65,7 @@ RUN unzip /opt/websvn-2.8.1.zip -d /opt &&\
 	rm /opt/websvn-2.8.1.zip &&\
 	mv /opt/websvn-2.8.1 /opt/websvn
 
-# 
+# Prepare ReposStyle XSLT
 ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/repos-style.zip
 RUN unzip /opt/repos-style.zip -d /opt &&\
 	rm /opt/repos-style.zip &&\
@@ -51,10 +86,5 @@ ENV SVN_SERVER_REPOSITORIES_URL=/svn \
 # Add WebDav configuration
 ADD svn-server/etc/apache2/conf.d/dav_svn.conf /etc/apache2/conf.d/dav_svn.conf
 
-# Set HOME in non /root folder
-# ENV HOME /home
-
-# USER apache
-
-# Expose ports for http and custom protocol access
+# Expose ports for http
 EXPOSE 80

@@ -5,20 +5,20 @@ Lightweight container providing an SVN server, based on **Alpine Linux** and S6 
 The access to the server is possible via **WebDav protocol** (http://).
 
 Components:
-- svn + apache taken from Alpine Linux
+- Alpine Linux (3.17) with S6 Overlay (3.1.1.2)
+- svn + apache taken from Alpine Linux<br>SVN is build from a intermediate state as `svnauthz` is required
 - iF.SVNAdmin web-interface used from [https://github.com/mfreiholz/iF.SVNAdmin](https://github.com/mfreiholz/iF.SVNAdmin)
 <br>version: 1.6.2 + some patches for PHP8.2
 - WebSVN web-interface used from [https://github.com/websvnphp/websvn](https://github.com/websvnphp/websvn)<br>version: 2.8.1
 - Repos-Web XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
 
 
-# Running Commands
+# How to run
 To run the image, you can use the following command:
 ```
-docker build --tag localhost/svn-server .
 docker run \
     --name svn-server \
-    -p 80:80 \
+    -p 8080:80 \
     -e SVN_SERVER_REPOSITORIES_URL=/svn \
     -e WEBSVN_URL=/websvn \
     -e WEBSVN_AUTH=2 \
@@ -39,15 +39,34 @@ docker run \
 - `<data>/svnadmin` - svnadmin related
 - `<data>/websvn` - websvn related
 
-In first start will be inited automatically all default folders/files/password - to easy start.
+## Building
+```
+docker build --tag localhost/svn-server .
+```
 
-so:
+## URLs
+- http://localhost:8080/svnadmin - configuration
+- http://localhost:8080/svn - with repositories
+- http://localhost:8080/websvn - websvn access
 
-- http://localhost/svn - with repositories
-- http://localhost/svnadmin - configuration (login: `admin` / password: `admin` **Don't forget change this** )
-- http://localhost/websvn - websvn access
+# First start
+With the first start `/data` will be inited automatically - folders/files/password - for easy start.
 
+Login to
+- http://localhost:8080/svnadmin (login: `admin` / password: `admin` **Don't forget change this** )
 
+and create users & repositories. Check the functionality by opening
+- http://localhost:8080/svn
+- optional: http://localhost:8080/websvn
 
-Check also that the custom protocol is working fine: go to your terminal and type `svn info svn://localhost:3690`. The system should connect to the server and tell you that is not able to find any repository.
+within your favorite webbrowser.
+
+Finally try to checkout a repository on your host machine:
+```
+svn checkout http://localhost:8080/svn/<reponame>
+```
+
+# Configuration
+It's recommended to use **svnadmin** to create user accounts/repositories.
+
 For further information on how to configure Subversion, please refer to the [official web page](https://subversion.apache.org/).
