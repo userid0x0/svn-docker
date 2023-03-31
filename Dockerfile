@@ -33,8 +33,8 @@ FROM crazymax/alpine-s6:3.17-3.1.1.2
 
 # copy previously generated public key
 # copy previously compiles svnserver packages
-COPY --from=builder /home/packager/.abuild/*.pub /etc/apk/keys
-COPY --from=builder /home/packager/packages/main/x86_64/* /tmp
+COPY --from=builder /home/packager/.abuild/*.pub /etc/apk/keys/
+COPY --from=builder /home/packager/packages/main/x86_64/* /tmp/
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
