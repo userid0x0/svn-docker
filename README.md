@@ -1,4 +1,5 @@
-[![Docker Image](https://img.shields.io/badge/docker%20image-available-green.svg)](https://hub.docker.com/r/userid0x0/svn-docker/)
+[![Docker Image](https://img.shields.io/badge/Docker%20Image-available-success&style=flat)](https://hub.docker.com/r/userid0x0/svn-docker/)
+[![Build](https://img.shields.io/github/actions/workflow/status/userid0x0/svn-docker/docker-image.yml?branch=master&label=build&logo=github&style=flat-square)](https://github.com/userid0x0/svn-docker/actions)
 
 It's a fork of https://github.com/elleFlorio/svn-docker & https://github.com/sea-kg/svn-docker
 
