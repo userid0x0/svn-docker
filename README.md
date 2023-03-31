@@ -1,3 +1,5 @@
+[![Docker Image](https://img.shields.io/badge/docker%20image-available-green.svg)](https://hub.docker.com/r/userid0x0/svn-docker/)
+
 It's a fork of https://github.com/elleFlorio/svn-docker & https://github.com/sea-kg/svn-docker
 
 # Description
@@ -23,7 +25,7 @@ docker run \
     -e WEBSVN_URL=/websvn \
     -e WEBSVN_AUTH=2 \
     -v `pwd`/data:/data \
-    localhost/svn-server
+    docker.io/userid0x0/svn-docker
 ```
 
 ## Environment variables
@@ -41,7 +43,7 @@ docker run \
 
 ## Building
 ```
-docker build --tag localhost/svn-server .
+docker build --tag localhost/svn-docker .
 ```
 
 ## URLs
