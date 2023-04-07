@@ -8,14 +8,14 @@ RUN apk add --no-cache alpine-sdk sudo git
 # setup the build user packager in container
 # allow sudo for all users
 RUN adduser -D packager \
-    && addgroup packager abuild \
-    &&  echo "%abuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/abuild
+	&& addgroup packager abuild \
+	&&  echo "%abuild ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/abuild
 
 # setup directory for built packages
 RUN mkdir -p /var/cache/distfiles \
-    && chmod a+w /var/cache/distfiles \
-    && chgrp abuild /var/cache/distfiles \
-    && chmod g+w /var/cache/distfiles
+	&& chmod a+w /var/cache/distfiles \
+	&& chgrp abuild /var/cache/distfiles \
+	&& chmod g+w /var/cache/distfiles
 
 # switch user within container
 USER packager
@@ -24,17 +24,22 @@ USER packager
 RUN abuild-keygen -a -i -n
 
 # build subversion tag `v20230208` as it includes subversion-tools e.g. svnauthz
+# results will be placed in /home/packager/packages/main/<arch>/
 RUN git clone --branch v20230208 --single-branch --depth 1 https://gitlab.alpinelinux.org/alpine/aports.git ~/aports
 RUN cd ~/aports/main/subversion \
-    && sudo apk update \
-    && abuild -r
+	&& sudo apk update \
+	&& abuild -r
+
+# copy results to architecture independent place
+RUN mkdir -p /home/packager/deploy \
+	&& find /home/packager/packages -name "*.apk" -exec mv {} /home/packager/deploy \;
 
 FROM crazymax/alpine-s6:3.17-3.1.1.2
 
 # copy previously generated public key
 # copy previously compiles svnserver packages
 COPY --from=builder /home/packager/.abuild/*.pub /etc/apk/keys/
-COPY --from=builder /home/packager/packages/main/x86_64/* /tmp/
+COPY --from=builder /home/packager/deploy/* /tmp/
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
