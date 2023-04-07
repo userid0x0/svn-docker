@@ -1,0 +1,7 @@
+# default certificate
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/_wildcard.localhost.pem
+        keyFile: /certs/_wildcard.localhost-key.pem
