@@ -2,7 +2,6 @@
 FROM crazymax/alpine-s6:3.17-3.1.1.2 AS builder
 
 # https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package
-
 RUN apk add --no-cache alpine-sdk sudo git
 
 # setup the build user packager in container
