@@ -7,11 +7,13 @@ on:
       - 'v[0-9]+.[0-9]+'
     paths-ignore:
       - '**.md'
+      - 'compose/**'
   pull_request:
     branches:
       - 'master'
     paths-ignore:
       - '**.md'
+      - 'compose/**'
 
 jobs:
   build:
@@ -42,9 +44,19 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
+      if: ${{ startsWith(github.ref, 'refs/heads/v') }}
       with:
         context: .
         platforms: linux/amd64,linux/arm64
-        push: ${{ startsWith(github.ref, 'refs/heads/v') }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+    - name: Build Docker image (fast)
+      uses: docker/build-push-action@v4
+      if: ${{ !startsWith(github.ref, 'refs/heads/v') }}
+      with:
+        context: .
+        platforms: linux/amd64
+        push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
