@@ -8,12 +8,14 @@ on:
     paths-ignore:
       - '**.md'
       - 'compose/**'
+      - '.github/workflows/docker-description.yml'
   pull_request:
     branches:
       - 'master'
     paths-ignore:
       - '**.md'
       - 'compose/**'
+      - '.github/**'
 
 jobs:
   build:
