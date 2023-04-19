@@ -19,6 +19,7 @@ services:
       # create entrypoints: epWeb + epWebsecure
       - '--entrypoints.epWeb.address=:80'
       - '--entrypoints.epWebsecure.address=:443'
+      - '--ping=true'
       - '--api.insecure=true'
     ports:
       - 80:80
