@@ -7,7 +7,7 @@ It's a fork of https://github.com/elleFlorio/svn-docker & https://github.com/sea
 Lightweight container providing an SVN server, based on **Alpine Linux** and S6 process management (see [here](https://github.com/crazy-max/docker-alpine-s6) for details).
 The access to the server is possible via **WebDav protocol** (http://).
 
-Components:
+Components (Tag `v3.17`):
 - Alpine Linux (3.17) with S6 Overlay (3.1.1.2)
 - svn + apache taken from Alpine Linux<br>SVN is build from a intermediate state as `svnauthz` is required
 - iF.SVNAdmin web-interface used from [https://github.com/mfreiholz/iF.SVNAdmin](https://github.com/mfreiholz/iF.SVNAdmin)
@@ -15,7 +15,9 @@ Components:
 - WebSVN web-interface used from [https://github.com/websvnphp/websvn](https://github.com/websvnphp/websvn)<br>version: 2.8.1
 - Repos-Web XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
 
-
+## Tags
+- `latest` latest version
+- `v3.17` based on Alpine Linux 3.17
 # How to run
 To run the image, you can use the following command:
 ```
