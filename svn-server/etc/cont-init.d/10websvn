@@ -62,4 +62,6 @@ if [ ! -f /data/websvn/config.php ]; then
     cp /opt/default_data/websvn/config.php /data/websvn/config.php
 fi
 
+# force update of config.php link 
+rm -f /opt/websvn/include/config.php
 ln -s /data/websvn/config.php /opt/websvn/include/config.php
