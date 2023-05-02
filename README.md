@@ -85,7 +85,7 @@ $ cd <checkout>
 # easy
 $ svn checkout http://localhost:8080/svn/<reponame>
 # with explicit username
-$ svn checkout --user <user> http://localhost:8080/svn/<reponame>
+$ svn checkout --username <user> http://localhost:8080/svn/<reponame>
 ```
 
 ## Commit
