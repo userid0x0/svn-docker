@@ -20,8 +20,8 @@ Components (Tag `v3.17`):
 - `v3.17` based on Alpine Linux 3.17
 # How to run
 To run the image, you can use the following command:
-```
-docker run \
+```bash
+$ docker run \
     --name svn-server \
     -p 8080:80 \
     -e SVN_SERVER_REPOSITORIES_URL=/svn \
@@ -45,8 +45,8 @@ docker run \
 - `<data>/websvn` - websvn related
 
 ## Building
-```
-docker build --tag localhost/svn-docker .
+``` bash
+$ docker build --tag localhost/svn-docker .
 ```
 
 ## URLs
@@ -55,21 +55,53 @@ docker build --tag localhost/svn-docker .
 - http://localhost:8080/websvn - websvn access
 
 # First start
+Create a local `data` folder for persistent storage and start `svn-docker` e.g.
+```bash
+$ cd <mydir>
+$ mkdir data
+$ docker run --name svn-server -p 8080:80 -v `pwd`/data:/data docker.io/userid0x0/svn-docker
+```
 With the first start `/data` will be inited automatically - folders/files/password - for easy start.
+
+Defaults:
+- `read-only` permissions for all known users
+- login: `admin` / password: `admin` **Don't forget change this**
 
 Login to
 - http://localhost:8080/svnadmin (login: `admin` / password: `admin` **Don't forget change this** )
 
-and create users & repositories. Check the functionality by opening
+## Create a first repository
+- Login to http://localhost:8080/svnadmin
+- Use *Repositories* -> *Add* to create a first repository `<reponame>`
+- Use *Users* -> *Add* to create a first user `<user>`
+- Use *Access-Paths* and assign *read-write* privileges for `user` to repository `<reponame>`  
+The screenshot assigns user `alex` `read-write` privileges to repository `test`.  
+![Access-Paths](/misc/access-path.jpg)
+
+## Checkout on host machine
+Finally try to checkout a repository on your host machine:
+```bash
+$ cd <checkout>
+# easy
+$ svn checkout http://localhost:8080/svn/<reponame>
+# with explicit username
+$ svn checkout --user <user> http://localhost:8080/svn/<reponame>
+```
+
+## Commit
+```bash
+$ cd <checkout>/<reponame>
+$ touch test.txt
+$ svn add test.txt
+$ svn commit -m "initial commit"
+```
+
+## Web frontends
+Check the functionality by opening
 - http://localhost:8080/svn
 - optional: http://localhost:8080/websvn
 
 within your favorite webbrowser.
-
-Finally try to checkout a repository on your host machine:
-```
-svn checkout http://localhost:8080/svn/<reponame>
-```
 
 # Configuration
 It's recommended to use **svnadmin** to create user accounts/repositories.
