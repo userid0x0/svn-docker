@@ -1,0 +1,21 @@
+#!/command/with-contenv sh
+# Create base folder for repos-style svn client config
+# intentionally empty folder
+
+# returns 0 in case of non-int
+# int(){ printf '%d' ${1:-} 2>/dev/null || :; }
+# returns [empty_string] in case of non-int
+int(){ expr 0 + ${1:-} 2>/dev/null||:; }
+
+rm -rf /tmp/repos-style
+mkdir -p /tmp/repos-style
+
+case $(int ${SVN_SERVER_REPOS_STYLE_AUTH}) in
+0 | 1 | 2)
+    # valid values, nothing todo
+    ;;
+*)
+    echo "Error: invalid value SVN_SERVER_REPOS_STYLE_AUTH='${SVN_SERVER_REPOS_STYLE_AUTH}'"
+    exit 1
+    ;;
+esac

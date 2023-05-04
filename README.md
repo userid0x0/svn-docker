@@ -13,7 +13,7 @@ Components (Tag `v3.17`):
 - iF.SVNAdmin web-interface used from [https://github.com/mfreiholz/iF.SVNAdmin](https://github.com/mfreiholz/iF.SVNAdmin)
 <br>version: 1.6.2 + some patches for PHP8.2
 - WebSVN web-interface used from [https://github.com/websvnphp/websvn](https://github.com/websvnphp/websvn)<br>version: 2.8.1
-- Repos-Web XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
+- Repos-Style XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
 
 ## Tags
 - `latest` latest version
@@ -27,17 +27,22 @@ $ docker run \
     -e SVN_SERVER_REPOSITORIES_URL=/svn \
     -e WEBSVN_URL=/websvn \
     -e WEBSVN_AUTH=2 \
+    -e SVN_SERVER_REPOS_STYLE_AUTH=2 \
     -v `pwd`/data:/data \
     docker.io/userid0x0/svn-docker
 ```
 
 ## Environment variables
 - `SVN_SERVER_REPOSITORIES_URL` location of the SVN repo on the web interface<br>default: `/svn`
+- `SVN_SERVER_REPOS_STYLE_AUTH` authentification used for Repos-Style history functionality<br>default: `2`
+    - `0` no authentification used (public access)
+    - `1` read access for all known users for all repositories
+    - `2` read access to all known users repecting `svnauthz`<br>disables history functionality (security leak)
 - `WEBSVN_URL` location of the WebSVN web interface<br>default: `/websvn`<br>websvn will be disabled when the URL is empty
 - `WEBSVN_AUTH` authentification used for WebSVN<br>default: `2`
     - `0` no authentification used (public access)
     - `1` read access for all known users for all repositories
-    - `2` read access to all known users repecting svnauthz (e.g. controlled via iF.SVNAdmin)
+    - `2` read access to all known users repecting `svnauthz` (e.g. controlled via iF.SVNAdmin)
 ## Volume `/data`
 - `<data>/repositories` - will be keep all repositories in subfolder in data
 - `<data>/subversion` - configurations for subversion (passwd && subversion-access-control)
