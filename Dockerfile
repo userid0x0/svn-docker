@@ -71,10 +71,14 @@ RUN unzip /opt/websvn-2.8.1.zip -d /opt &&\
 
 # Prepare ReposStyle XSLT
 ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/repos-style.zip
-RUN unzip /opt/repos-style.zip -d /opt &&\
-	rm /opt/repos-style.zip &&\
-	mv /opt/repos-style-master /opt/repos-style &&\
-	ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web
+RUN unzip /opt/repos-style.zip -d /opt \
+	&& rm /opt/repos-style.zip \
+	&& mv /opt/repos-style-master /opt/repos-style \
+	&& ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web \
+	&& sed -i 's#@@Repository@@#file:///data/repositories#g' /opt/repos-style/repos-web/open/log/index.php \
+	&& sed -i '/isParent/ s/false/true/g' /opt/repos-style/repos-web/open/log/index.php \
+	&& sed -i 's#--non-interactive#--non-interactive --config-dir /tmp/repos-style#g' /opt/repos-style/repos-web/open/log/index.php \
+	&& sed -i "/<?php/a if (intval(getenv('SVN_SERVER_REPOS_STYLE_AUTH')) >= 2) die('Disabled for security reasons (Reason: svnauthz not supported by repos-style). Set SVN_SERVER_REPOS_STYLE_AUTH<2.');" /opt/repos-style/repos-web/open/log/index.php 
 
 # Add oneshot scripts
 ADD svn-server/etc/cont-init.d /etc/cont-init.d/
@@ -84,6 +88,7 @@ ADD svn-server/etc/services.d /etc/services.d/
 
 # default environment paths
 ENV SVN_SERVER_REPOSITORIES_URL=/svn \
+	SVN_SERVER_REPOS_STYLE_AUTH=2 \
 	WEBSVN_URL=/websvn \
 	WEBSVN_AUTH=2
 
