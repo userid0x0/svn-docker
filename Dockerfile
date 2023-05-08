@@ -1,5 +1,5 @@
 # Alpine Linux with s6 service management
-FROM crazymax/alpine-s6:3.17-3.1.1.2 AS builder
+FROM crazymax/alpine-s6:3.17-3.1.4.2 AS builder
 
 # https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package
 
@@ -34,7 +34,7 @@ RUN cd ~/aports/main/subversion \
 RUN mkdir -p /home/packager/deploy \
 	&& find /home/packager/packages -name "*.apk" -exec mv {} /home/packager/deploy \;
 
-FROM crazymax/alpine-s6:3.17-3.1.1.2
+FROM crazymax/alpine-s6:3.17-3.1.4.2
 
 # copy previously generated public key
 # copy previously compiles svnserver packages
