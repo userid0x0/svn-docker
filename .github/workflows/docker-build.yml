@@ -1,0 +1,36 @@
+name: Docker Build CI
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '**.md'
+      - 'compose/**'
+      - '.github/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '**.md'
+      - 'compose/**'
+      - '.github/**'
+
+jobs:
+  build-fast:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout with submodules
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build Docker image (fast)
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: false
+        tags: localhost/svn-docker:dev

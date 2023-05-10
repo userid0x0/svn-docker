@@ -1,0 +1,99 @@
+version: "3.7"
+
+services:
+  traefik:
+    image: traefik:v2.9
+    container_name: reverse_proxy
+    restart: unless-stopped
+    command:
+      - '--global.sendAnonymousUsage=false'
+      # Providers:
+      # Docker (controlled by labels)
+      - '--providers.docker'
+      - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.network=traefik_default'
+      # File (watch folder `/providers`)
+      - '--providers.file'
+      - '--providers.file.directory=/providers'
+      - '--providers.file.watch=true'
+      # create entrypoints: epWeb + epWebsecure
+      - '--entrypoints.epWeb.address=:80'
+      - '--entrypoints.epWebsecure.address=:443'
+      - '--ping=true'
+      - '--api.insecure=true'
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./providers/:/providers
+      - ./certs/:/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    healthcheck:
+      test: ['CMD', 'traefik', 'healthcheck', '--ping']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - traefik_default
+  
+  whoami:
+    image: traefik/whoami:latest
+    container_name: whoami
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      # Routers are https only (tls=true)
+      # Routers 1: by path
+      - traefik.http.routers.rWhoamiPath.rule=Path(`/admin/whoami`)
+      - traefik.http.routers.rWhoamiPath.entrypoints=epWebsecure
+      - traefik.http.routers.rWhoamiPath.tls=true
+      - traefik.http.routers.rWhoamiPath.middlewares=mwWhoamiRemovePath
+      # Routers 2: by host
+      - traefik.http.routers.rWhoamiSubdomain.rule=Host(`whoami.localhost`)
+      - traefik.http.routers.rWhoamiSubdomain.entrypoints=epWebsecure
+      - traefik.http.routers.rWhoamiSubdomain.tls=true
+      # middlewares
+      ## remove-path: strip prefix /admin/whoami
+      - traefik.http.middlewares.mwWhoamiRemovePath.stripprefix.prefixes=/admin/whoami
+    networks:
+      - traefik_default
+  
+  svn:
+    image: userid0x0/svn-docker:latest
+    container_name: subversion
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      # Router
+      # Router 1: by path - https only
+      - traefik.http.routers.rSvnPathHttps.rule=Host(`localhost`)&&PathPrefix(`/svn`,`/svnadmin`,`/repos-web`,`/websvn`)
+      - traefik.http.routers.rSvnPathHttps.entrypoints=epWebsecure
+      - traefik.http.routers.rSvnPathHttps.tls=true
+      # Router 2: https subdomain only
+      - traefik.http.routers.rSvnSubdomainSecure.rule=Host(`secure.localhost`)
+      - traefik.http.routers.rSvnSubdomainSecure.entrypoints=epWebsecure
+      - traefik.http.routers.rSvnSubdomainSecure.tls=true
+      # Router 3: http subdomain only
+      - traefik.http.routers.rSvnSubdomainInsecure.rule=Host(`insecure.localhost`)
+      - traefik.http.routers.rSvnSubdomainInsecure.entrypoints=epWeb
+      # Router 4: http/https subdomain
+      - traefik.http.routers.rSvnSubdomainRedirectHttp.rule=Host(`svn.localhost`)
+      - traefik.http.routers.rSvnSubdomainRedirectHttp.entrypoints=epWeb
+      - traefik.http.routers.rSvnSubdomainRedirectHttp.middlewares=mwHttpToHttps@file
+      - traefik.http.routers.rSvnSubdomainRedirectHttps.rule=Host(`svn.localhost`)
+      - traefik.http.routers.rSvnSubdomainRedirectHttps.entrypoints=epWebsecure
+      - traefik.http.routers.rSvnSubdomainRedirectHttps.tls=true
+    volumes:
+      - svn_data:/data
+    networks:
+      - traefik_default
+
+networks:
+  # traefik_default is the default name for a traefik network - specify this explicitly here
+  # external means it needs to exist before `docker compose up`
+  traefik_default:
+    external: true
+
+volumes:
+  svn_data:

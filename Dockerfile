@@ -1,5 +1,5 @@
 # Alpine Linux with s6 service management
-FROM crazymax/alpine-s6:3.17-3.1.1.2 AS builder
+FROM crazymax/alpine-s6:3.17-3.1.4.2 AS builder
 
 # https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package
 RUN apk add --no-cache alpine-sdk sudo git
@@ -33,7 +33,7 @@ RUN cd ~/aports/main/subversion \
 RUN mkdir -p /home/packager/deploy \
 	&& find /home/packager/packages -name "*.apk" -exec mv {} /home/packager/deploy \;
 
-FROM crazymax/alpine-s6:3.17-3.1.1.2
+FROM crazymax/alpine-s6:3.17-3.1.4.2
 
 # copy previously generated public key
 # copy previously compiles svnserver packages
@@ -74,7 +74,6 @@ ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/
 RUN unzip /opt/repos-style.zip -d /opt \
 	&& rm /opt/repos-style.zip \
 	&& mv /opt/repos-style-master /opt/repos-style \
-	&& ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web \
 	&& sed -i 's#@@Repository@@#file:///data/repositories#g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i '/isParent/ s/false/true/g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i 's#--non-interactive#--non-interactive --config-dir /tmp/repos-style#g' /opt/repos-style/repos-web/open/log/index.php \
