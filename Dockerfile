@@ -75,7 +75,6 @@ ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/
 RUN unzip /opt/repos-style.zip -d /opt \
 	&& rm /opt/repos-style.zip \
 	&& mv /opt/repos-style-master /opt/repos-style \
-	&& ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web \
 	&& sed -i 's#@@Repository@@#file:///data/repositories#g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i '/isParent/ s/false/true/g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i 's#--non-interactive#--non-interactive --config-dir /tmp/repos-style#g' /opt/repos-style/repos-web/open/log/index.php \
