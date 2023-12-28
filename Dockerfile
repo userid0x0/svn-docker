@@ -57,3 +57,4 @@ ADD svn-server/etc/apache2/conf.d/dav_svn.conf /etc/apache2/conf.d/dav_svn.conf
 
 # Expose ports for http
 EXPOSE 80
+
