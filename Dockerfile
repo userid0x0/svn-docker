@@ -21,14 +21,14 @@ RUN sed -i -e 's/^root::/root:!:/' /etc/shadow
 # + patches for PHP8
 ADD svn-server/opt/default_data /opt/default_data
 ADD iF.SVNAdmin /opt/svnadmin
-RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin &&\
-	rm -rf /opt/svnadmin/data
+RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin \
+	&& rm -rf /opt/svnadmin/data
 
 # Prepare WebSVN
-ADD https://github.com/websvnphp/websvn/archive/refs/tags/2.8.1.zip /opt/websvn-2.8.1.zip
-RUN unzip /opt/websvn-2.8.1.zip -d /opt &&\
-	rm /opt/websvn-2.8.1.zip &&\
-	mv /opt/websvn-2.8.1 /opt/websvn
+ADD https://github.com/websvnphp/websvn/archive/refs/tags/2.8.3.zip /opt/websvn-2.8.3.zip
+RUN unzip /opt/websvn-2.8.3.zip -d /opt \
+	&& rm /opt/websvn-2.8.3.zip \
+	&& mv /opt/websvn-2.8.3 /opt/websvn
 
 # Prepare ReposStyle XSLT
 ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/repos-style.zip
