@@ -1,5 +1,5 @@
 # Alpine Linux with s6 service management
-FROM crazymax/alpine-s6:3.19-3.1.5.0
+FROM crazymax/alpine-s6:3.20-3.1.5.0
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
