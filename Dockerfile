@@ -25,17 +25,11 @@ RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin \
 	&& rm -rf /opt/svnadmin/data
 
 # Prepare WebSVN
-ADD https://github.com/websvnphp/websvn/archive/refs/tags/2.8.3.zip /opt/websvn-2.8.3.zip
-RUN unzip /opt/websvn-2.8.3.zip -d /opt \
-	&& rm /opt/websvn-2.8.3.zip \
-	&& mv /opt/websvn-2.8.3 /opt/websvn
+ADD https://github.com/websvnphp/websvn.git#2.8.4 /opt/websvn
 
 # Prepare ReposStyle XSLT
-ADD https://github.com/rburgoyne/repos-style/archive/refs/heads/master.zip /opt/repos-style.zip
-RUN unzip /opt/repos-style.zip -d /opt \
-	&& rm /opt/repos-style.zip \
-	&& mv /opt/repos-style-master /opt/repos-style \
-	&& sed -i 's#@@Repository@@#file:///data/repositories#g' /opt/repos-style/repos-web/open/log/index.php \
+ADD https://github.com/rburgoyne/repos-style.git#0c891a168548bd83c17e94152ecca7c2a3d6c203 /opt/repos-style
+RUN sed -i 's#@@Repository@@#file:///data/repositories#g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i '/isParent/ s/false/true/g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i 's#--non-interactive#--non-interactive --config-dir /tmp/repos-style#g' /opt/repos-style/repos-web/open/log/index.php \
 	&& sed -i "/<?php/a if (intval(getenv('SVN_SERVER_REPOS_STYLE_AUTH')) >= 2) die('Disabled for security reasons (Reason: svnauthz not supported by repos-style). Set SVN_SERVER_REPOS_STYLE_AUTH<2.');" /opt/repos-style/repos-web/open/log/index.php 
