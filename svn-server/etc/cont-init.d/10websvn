@@ -65,3 +65,5 @@ fi
 # force update of config.php link 
 rm -f /opt/websvn/include/config.php
 ln -s /data/websvn/config.php /opt/websvn/include/config.php
+
+chown -R svn:svnusers /data/websvn
