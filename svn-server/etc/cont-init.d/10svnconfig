@@ -19,6 +19,4 @@ if [ ! -f /data/subversion/subversion-access-control ]; then
     cp /opt/default_data/subversion/subversion-access-control /data/subversion/subversion-access-control
 fi
 
-chmod 777 -R /data/subversion
-
-
+chown -R svn:svnusers /data/subversion

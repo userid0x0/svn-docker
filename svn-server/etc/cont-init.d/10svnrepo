@@ -6,5 +6,5 @@ if [ ! -d /data/repositories ]; then
     mkdir -p /data/repositories
 fi
 
-chmod 777 /data/repositories
+chown -R svn:svnusers /data/repositories
 

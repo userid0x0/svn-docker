@@ -33,4 +33,4 @@ if [ ! -f /opt/svnadmin/data/.htaccess ]; then
 EOF
 fi
 
-chmod 777 /data/svnadmin/*
+chown -R svn:svnusers /data/svnadmin
