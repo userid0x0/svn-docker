@@ -5,5 +5,6 @@
 # avoid 'already pid is running' error
 rm -f /run/apache2/httpd.pid
 
-export HOME=$(realpath ~svn)
-exec s6-setuidgid svn /usr/sbin/apachectl -DFOREGROUND;
+export HOME=$(realpath ~abc)
+exec s6-setuidgid abc \
+  /usr/sbin/apachectl -DFOREGROUND;

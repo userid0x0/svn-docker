@@ -3,8 +3,5 @@
 
 # /data/respositories: persistent storage for SVN repo
 if [ ! -d /data/repositories ]; then
-    mkdir -p /data/repositories
+  install -d -o abc -g abc /data/repositories
 fi
-
-chown -R svn:svnusers /data/repositories
-

@@ -43,5 +43,5 @@ fi
 
 # create link in htdocs
 if [ ! -e /var/www/localhost/htdocs/repos-web ]; then
-    ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web
+  ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web
 fi
