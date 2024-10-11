@@ -33,8 +33,8 @@ if [ ${?} != 0 ]; then
 fi
 
 # /data/websvn: persistent storage for websvn configuration
-if [ ! -d /data/websvn ]; then
-  install -d -o abc -g abc /data/websvn
+if [ ! -d /config/websvn ]; then
+  install -d -o abc -g abc /config/websvn
 fi
 
 # enable apache authentification IF WEBSVN_AUTH >= 1
@@ -43,7 +43,7 @@ if [ $(int ${WEBSVN_AUTH}) -ge 1 ]; then
 <Location ${WEBSVN_URL}>
      AuthType Basic
      AuthName "Subversion Repository"
-     AuthUserFile /data/subversion/passwd
+     AuthUserFile /config/subversion/passwd
      Require valid-user
 </Location>
 EOF
@@ -55,13 +55,13 @@ if [ ! -e /var/www/localhost/htdocs${WEBSVN_URL} ]; then
 fi
 
 # copy configuration template
-install -o abc -g abc /opt/websvn/include/distconfig.php /data/websvn/distconfig.php
+install -o abc -g abc /opt/websvn/include/distconfig.php /config/websvn/distconfig.php
 
 # copy default configuration if not yet existing e.g. initial start
-if [ ! -f /data/websvn/config.php ]; then
-  install -o abc -g abc /defaults/websvn/config.php /data/websvn/config.php
+if [ ! -f /config/websvn/config.php ]; then
+  install -o abc -g abc /defaults/websvn/config.php /config/websvn/config.php
 fi
 
 # force update of config.php link 
 rm -f /opt/websvn/include/config.php
-ln -s /data/websvn/config.php /opt/websvn/include/config.php
+ln -s /config/websvn/config.php /opt/websvn/include/config.php

@@ -1,14 +1,14 @@
 #!/command/with-contenv sh
 # Create folders and symlinks for iF.SVNAdmin
 
-# /data/svnadmin: persistent storage for iF.SVNAdmin data
-if [ ! -d /data/svnadmin ]; then
-  install -d -o abc -g abc /data/svnadmin
+# /config/svnadmin: persistent storage for iF.SVNAdmin data
+if [ ! -d /config/svnadmin ]; then
+  install -d -o abc -g abc /config/svnadmin
 fi
 
 # create symlink to persistent storage
 if [ ! -e /opt/svnadmin/data ]; then
-  ln -s /data/svnadmin /opt/svnadmin/data
+  ln -s /config/svnadmin /opt/svnadmin/data
 fi
 
 # copy default configuration if not yet existing e.g. initial start

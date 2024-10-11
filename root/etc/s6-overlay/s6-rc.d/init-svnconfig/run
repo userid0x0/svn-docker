@@ -1,20 +1,20 @@
 #!/command/with-contenv sh
 # Create SVN configuration
 
-# /data/subversion: persistent storage for subversion configuration
-if [ ! -d /data/subversion ]; then
-  install -d -o abc -g abc /data/subversion
+# /config/subversion: persistent storage for subversion configuration
+if [ ! -d /config/subversion ]; then
+  install -d -o abc -g abc /config/subversion
 fi
 
 if [ ! -e /etc/subversion ]; then
-  ln -s /data/subversion /etc/subversion
+  ln -s /config/subversion /etc/subversion
 fi
 
 # copy default configuration if not yet existing e.g. initial start
-if [ ! -f /data/subversion/passwd ]; then
-  install -o abc -g abc /defaults/subversion/passwd /data/subversion/passwd
+if [ ! -f /config/subversion/passwd ]; then
+  install -o abc -g abc /defaults/subversion/passwd /config/subversion/passwd
 fi
 
-if [ ! -f /data/subversion/subversion-access-control ]; then
-  install -o abc -g abc /defaults/subversion/subversion-access-control /data/subversion/subversion-access-control
+if [ ! -f /contig/subversion/subversion-access-control ]; then
+  install -o abc -g abc /defaults/subversion/subversion-access-control /config/subversion/subversion-access-control
 fi

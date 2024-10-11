@@ -1,7 +1,7 @@
 #!/command/with-contenv sh
 # Create SVN repository root
 
-# /data/respositories: persistent storage for SVN repo
-if [ ! -d /data/repositories ]; then
-  install -d -o abc -g abc /data/repositories
+# /config/respositories: persistent storage for SVN repo
+if [ ! -d /config/repositories ]; then
+  install -d -o abc -g abc /config/repositories
 fi

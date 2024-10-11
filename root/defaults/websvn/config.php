@@ -115,7 +115,7 @@
 //   Unix-like: /path/to/parent
 //   Windows: c:\\svn
 //
-$config->parentPath('/data/repositories');
+$config->parentPath('/config/repositories');
 // $config->parentPath('filesystem path', 'group');
 //
 // To exclude a repository from being added by the parentPath method uncomment the next line
@@ -242,7 +242,7 @@ $config->addTemplatePath($locwebsvnreal.'/templates/Elegant/');
 // found in install.txt
 if (empty(getenv('WEBSVN_AUTH'))) {}
 elseif (intval(getenv('WEBSVN_AUTH')) >= 2) {
-  $config->useAccessFile('/data/subversion/subversion-access-control');
+  $config->useAccessFile('/config/subversion/subversion-access-control');
 }
 // $config->useAccessFile('/path/to/accessfile'); // Global access file
 
