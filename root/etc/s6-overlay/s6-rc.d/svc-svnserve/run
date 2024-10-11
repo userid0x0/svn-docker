@@ -1,7 +1,0 @@
-#!/command/with-contenv sh
-
-exec s6-setuidgid abc \
-  /usr/bin/svnserve \
-    --daemon --foreground \
-    --root /data/repositories \
-    --listen-port 3690;
