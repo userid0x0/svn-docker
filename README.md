@@ -4,19 +4,20 @@
 It's a fork of https://github.com/elleFlorio/svn-docker & https://github.com/sea-kg/svn-docker
 
 # Description
-Lightweight container providing an SVN server, based on **Alpine Linux** and S6 process management (see [here](https://github.com/crazy-max/docker-alpine-s6) for details).
+Lightweight container providing an SVN server, based on **Alpine Linux** and S6 process management (see [here](https://github.com/linuxserver/docker-baseimage-alpine) for details).
 The access to the server is possible via **WebDav protocol** (http://).
 
-Components (Tag `v3.20`):
-- Alpine Linux (3.20) with S6 Overlay (3.1.5.0)
+Components (Tag `lsio-v3.20`):
+- Alpine Linux (3.20) with S6 Overlay
 - svn + apache taken from Alpine Linux
 - iF.SVNAdmin web-interface used from [https://github.com/mfreiholz/iF.SVNAdmin](https://github.com/mfreiholz/iF.SVNAdmin)
-<br>version: 1.6.2 + some patches for PHP8.2
+<br>version: 1.6.2 + some patches for PHP8.3
 - WebSVN web-interface used from [https://github.com/websvnphp/websvn](https://github.com/websvnphp/websvn)<br>version: 2.8.4
 - Repos-Style XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
 
 ## Tags
 - `latest` latest version
+- `lsio-v3.20` based on linuxserver.io baseimage / Alpine Linux 3.20
 - `v3.20` based on Alpine Linux 3.20
 - `v3.19` based on Alpine Linux 3.19
 - `v3.18` based on Alpine Linux 3.18
@@ -31,7 +32,7 @@ $ docker run \
     -e WEBSVN_URL=/websvn \
     -e WEBSVN_AUTH=2 \
     -e SVN_SERVER_REPOS_STYLE_AUTH=2 \
-    -v `pwd`/data:/data \
+    -v `pwd`/data:/config \
     docker.io/userid0x0/svn-docker
 ```
 
@@ -46,7 +47,9 @@ $ docker run \
     - `0` no authentification used (public access)
     - `1` read access for all known users for all repositories
     - `2` read access to all known users repecting `svnauthz` (e.g. controlled via iF.SVNAdmin)
-## Volume `/data`
+- `PUID` UserID<br>default: `911`
+- `PGID` GroupID<br>default: `911`
+## Volume `/config`
 - `<data>/repositories` - will be keep all repositories in subfolder in data
 - `<data>/subversion` - configurations for subversion (passwd && subversion-access-control)
 - `<data>/svnadmin` - svnadmin related
@@ -67,9 +70,9 @@ Create a local `data` folder for persistent storage and start `svn-docker` e.g.
 ```bash
 $ cd <mydir>
 $ mkdir data
-$ docker run --name svn-server -p 8080:80 -v `pwd`/data:/data docker.io/userid0x0/svn-docker
+$ docker run --name svn-server -p 8080:80 -v `pwd`/data:/config docker.io/userid0x0/svn-docker
 ```
-With the first start `/data` will be inited automatically - folders/files/password - for easy start.
+With the first start `/config` will be inited automatically - folders/files/password - for easy start.
 
 Defaults:
 - `read-only` permissions for all known users
