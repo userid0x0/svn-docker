@@ -23,15 +23,9 @@ case $(int ${SVN_SERVER_REPOS_STYLE_AUTH}) in
     ;;
 esac
 
-cat << EOF > /etc/apache2/conf.d/reposstyle.conf
-<Location /repos-web>
-    Options -Indexes
-</Location>
-EOF
-
 # enable apache authentification IF SVN_SERVER_REPOS_STYLE_AUTH >= 1
 if [ $(int ${SVN_SERVER_REPOS_STYLE_AUTH}) -ge 1 ]; then
-  cat << EOF >> /etc/apache2/conf.d/reposstyle.conf
+  cat << EOF > /etc/apache2/conf.d/reposstyle_auth.conf
 <Location /repos-web/open/log>
     AuthType Basic
     AuthName "Subversion Repository"
