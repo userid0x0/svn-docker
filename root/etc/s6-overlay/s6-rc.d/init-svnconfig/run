@@ -12,9 +12,9 @@ fi
 
 # copy default configuration if not yet existing e.g. initial start
 if [ ! -f /data/subversion/passwd ]; then
-  install -o abc -g abc /opt/default_data/subversion/passwd /data/subversion/passwd
+  install -o abc -g abc /defaults/subversion/passwd /data/subversion/passwd
 fi
 
 if [ ! -f /data/subversion/subversion-access-control ]; then
-  install -o abc -g abc /opt/default_data/subversion/subversion-access-control /data/subversion/subversion-access-control
+  install -o abc -g abc /defaults/subversion/subversion-access-control /data/subversion/subversion-access-control
 fi

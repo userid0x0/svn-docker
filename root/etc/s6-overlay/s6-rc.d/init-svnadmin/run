@@ -13,15 +13,15 @@ fi
 
 # copy default configuration if not yet existing e.g. initial start
 if [ ! -f /opt/svnadmin/data/config.ini ]; then
-  install -o abc -g abc /opt/default_data/svnadmin/config.ini /opt/svnadmin/data/config.ini
+  install -o abc -g abc /defaults/svnadmin/config.ini /opt/svnadmin/data/config.ini
 fi
 
 if [ ! -f /opt/svnadmin/data/userroleassignments.ini ]; then
-  install -o abc -g abc /opt/default_data/svnadmin/userroleassignments.ini /opt/svnadmin/data/userroleassignments.ini
+  install -o abc -g abc /defaults/svnadmin/userroleassignments.ini /opt/svnadmin/data/userroleassignments.ini
 fi
 
 if [ ! -f /opt/svnadmin/data/config.tpl.ini ]; then
-  install -o abc -g abc /opt/default_data/svnadmin/config.tpl.ini /opt/svnadmin/data/config.tpl.ini
+  install -o abc -g abc /defaults/svnadmin/config.tpl.ini /opt/svnadmin/data/config.tpl.ini
 fi
 
 # create .htaccess file for data folder

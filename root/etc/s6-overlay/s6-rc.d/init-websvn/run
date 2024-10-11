@@ -59,7 +59,7 @@ install -o abc -g abc /opt/websvn/include/distconfig.php /data/websvn/distconfig
 
 # copy default configuration if not yet existing e.g. initial start
 if [ ! -f /data/websvn/config.php ]; then
-  install -o abc -g abc /opt/default_data/websvn/config.php /data/websvn/config.php
+  install -o abc -g abc /defaults/websvn/config.php /data/websvn/config.php
 fi
 
 # force update of config.php link 
