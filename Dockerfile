@@ -10,9 +10,9 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.20
 RUN apk add --no-cache apache2 apache2-ctl apache2-utils apache2-webdav mod_dav_svn \
 	&& apk add --no-cache subversion subversion-libs subversion-tools \
 	&& apk add --no-cache wget unzip \
-	&& apk add --no-cache php82 php82-apache2 php82-session php82-json php82-ldap php82-xml \
+	&& apk add --no-cache php83 php83-apache2 php83-session php83-json php83-ldap php83-xml \
 	&& sed -i "\#Directory \"/var/www/localhost/htdocs#,\#Directory# s#AllowOverride None#AllowOverride All#g" /etc/apache2/httpd.conf \
-	&& sed -i 's/;extension=ldap/extension=ldap/' /etc/php82/php.ini \
+	&& sed -i 's/;extension=ldap/extension=ldap/' /etc/php83/php.ini \
 	&& deluser apache \
 	&& sed -i 's/^User.*/User abc/' /etc/apache2/httpd.conf \
 	&& sed -i 's/^Group.*/Group abc/' /etc/apache2/httpd.conf
