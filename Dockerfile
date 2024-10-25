@@ -22,7 +22,6 @@ COPY root/ /
 
 # Basicly from https://github.com/mfreiholz/iF.SVNAdmin/archive/stable-1.6.2.zip
 # + patches for PHP8
-#ADD svn-server/opt/default_data /opt/default_data
 ADD --chown=abc:abc \
 	https://github.com/userid0x0/iF.SVNAdmin.git#a3e9ed34772335707113dd16b6bb5cbc7f380e66 \
 	/opt/svnadmin
