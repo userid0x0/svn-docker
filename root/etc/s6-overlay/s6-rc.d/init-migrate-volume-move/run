@@ -1,0 +1,17 @@
+#!/command/with-contenv sh
+
+# check if the obsolete `/data` volume exists, this was used before
+# the rebase to the linuxserver.io baseimage
+
+# no `/data` -> all fine
+[ ! -d "/data" ] && exit 0
+
+# `/data` exists - if the new volume exists as well, all fine
+[ -d "/config/repositories" ] && exit 0
+
+echo "Error: starting tag 'lscr-3.20' the volume mount moved"
+echo "         from '/data' to '/config'"
+echo "."
+echo "Info:  Please adapt your 'docker-compose' / 'docker run'"
+echo "       configuration."
+exit 1
