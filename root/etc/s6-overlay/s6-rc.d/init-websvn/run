@@ -37,6 +37,8 @@ if [ ! -d /config/websvn ]; then
   install -d -o abc -g abc /config/websvn
 fi
 
+lsiown -R abc:abc /config/websvn
+
 # enable apache authentification IF WEBSVN_AUTH >= 1
 if [ $(int ${WEBSVN_AUTH}) -ge 1 ]; then
   cat << EOF > /etc/apache2/conf.d/websvn.conf

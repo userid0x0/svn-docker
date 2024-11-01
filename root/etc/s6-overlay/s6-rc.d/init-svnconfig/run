@@ -6,6 +6,8 @@ if [ ! -d /config/subversion ]; then
   install -d -o abc -g abc /config/subversion
 fi
 
+lsiown -R abc:abc /config/subversion
+
 if [ ! -e /etc/subversion ]; then
   ln -s /config/subversion /etc/subversion
 fi
