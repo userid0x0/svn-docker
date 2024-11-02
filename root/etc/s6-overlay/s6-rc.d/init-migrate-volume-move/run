@@ -9,7 +9,7 @@
 # `/data` exists - if the new volume exists as well, all fine
 [ -d "/config/repositories" ] && exit 0
 
-echo "Error: starting tag 'lscr-3.20' the volume mount moved"
+echo "Error: starting tag 'v3.20-lsio' the volume mount moved"
 echo "         from '/data' to '/config'"
 echo "."
 echo "Info:  Please adapt your 'docker-compose' / 'docker run'"

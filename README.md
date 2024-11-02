@@ -7,7 +7,7 @@ It's a fork of https://github.com/elleFlorio/svn-docker & https://github.com/sea
 Lightweight container providing an SVN server, based on **Alpine Linux** and S6 process management (see [here](https://github.com/linuxserver/docker-baseimage-alpine) for details).
 The access to the server is possible via **WebDav protocol** (http://).
 
-Components (Tag `lsio-v3.20`):
+Components (Tag `v3.20-lsio`):
 - Alpine Linux (3.20) with S6 Overlay
 - svn + apache taken from Alpine Linux
 - iF.SVNAdmin web-interface used from [https://github.com/mfreiholz/iF.SVNAdmin](https://github.com/mfreiholz/iF.SVNAdmin)
@@ -15,9 +15,12 @@ Components (Tag `lsio-v3.20`):
 - WebSVN web-interface used from [https://github.com/websvnphp/websvn](https://github.com/websvnphp/websvn)<br>version: 2.8.4
 - Repos-Style XSLT Stylesheet used from [https://github.com/rburgoyne/repos-style](https://github.com/rburgoyne/repos-style)
 
+Note:
+Starting tag `v3.20-lsio` the volume mount moved from `/data` to `/config`. Please adapt your `docker-compose.yml` file accordingly.
+
 ## Tags
 - `latest` latest version
-- `lsio-v3.20` based on linuxserver.io baseimage / Alpine Linux 3.20
+- `v3.20-lsio` based on linuxserver.io baseimage / Alpine Linux 3.20
 - `v3.20` based on Alpine Linux 3.20
 - `v3.19` based on Alpine Linux 3.19
 - `v3.18` based on Alpine Linux 3.18

@@ -60,7 +60,7 @@ services:
       - traefik_default
   
   svn:
-    image: userid0x0/svn-docker:latest
+    image: userid0x0/svn-docker:v3.20-lsio
     container_name: subversion
     restart: unless-stopped
     labels:
@@ -85,7 +85,7 @@ services:
       - traefik.http.routers.rSvnSubdomainRedirectHttps.entrypoints=epWebsecure
       - traefik.http.routers.rSvnSubdomainRedirectHttps.tls=true
     volumes:
-      - svn_data:/data
+      - svn_data:/config
     networks:
       - traefik_default
 
