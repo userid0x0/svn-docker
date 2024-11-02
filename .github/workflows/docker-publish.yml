@@ -28,7 +28,7 @@ jobs:
         images: ${{ secrets.DOCKERHUB_USERNAME }}/svn-docker
         tags: |
           type=ref,event=branch
-          type=raw,value=latest,enable=true
+          type=raw,value=latest,enable=false
         flavor: |
           latest=false
     - name: Login to Docker Hub
