@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+chown -R abc:abc /var/www
+chown -R abc:abc /var/log/apache2
+chown -R abc:abc /run/apache2

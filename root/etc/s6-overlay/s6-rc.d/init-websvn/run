@@ -1,0 +1,69 @@
+#!/command/with-contenv sh
+# Create WebSVN configuration
+
+# returns 0 in case of non-int
+# int(){ printf '%d' ${1:-} 2>/dev/null || :; }
+# returns [empty_string] in case of non-int
+int(){ expr 0 + ${1:-} 2>/dev/null||:; }
+
+# remove trailing slash
+WEBSVN_URL=$(echo "$WEBSVN_URL" | sed 's_/$__g')
+
+# early out if WEBSVN_URL is not configured
+if [ -z "${WEBSVN_URL}" ]; then
+  echo "Info: Disable WebSVN as WEBSVN_URL is empty"
+  exit 0
+fi
+
+case $(int ${WEBSVN_AUTH}) in
+0 | 1 | 2)
+  # valid values, nothing todo
+  ;;
+*)
+  echo "Error: invalid value WEBSVN_AUTH='${WEBSVN_AUTH}'"
+  echo "Info: disable WebSVN"
+  exit 1
+  ;;
+esac
+
+# ensure it starts with a slash
+echo "${WEBSVN_URL}" | grep ^/ > /dev/null
+if [ ${?} != 0 ]; then
+  WEBSVN_URL="/${WEBSVN_URL}"
+fi
+
+# /data/websvn: persistent storage for websvn configuration
+if [ ! -d /config/websvn ]; then
+  install -d -o abc -g abc /config/websvn
+fi
+
+lsiown -R abc:abc /config/websvn
+
+# enable apache authentification IF WEBSVN_AUTH >= 1
+if [ $(int ${WEBSVN_AUTH}) -ge 1 ]; then
+  cat << EOF > /etc/apache2/conf.d/websvn.conf
+<Location ${WEBSVN_URL}>
+     AuthType Basic
+     AuthName "Subversion Repository"
+     AuthUserFile /config/subversion/passwd
+     Require valid-user
+</Location>
+EOF
+fi
+
+# create link in htdocs
+if [ ! -e /var/www/localhost/htdocs${WEBSVN_URL} ]; then
+  ln -s /opt/websvn /var/www/localhost/htdocs${WEBSVN_URL}
+fi
+
+# copy configuration template
+install -o abc -g abc /opt/websvn/include/distconfig.php /config/websvn/distconfig.php
+
+# copy default configuration if not yet existing e.g. initial start
+if [ ! -f /config/websvn/config.php ]; then
+  install -o abc -g abc /defaults/websvn/config.php /config/websvn/config.php
+fi
+
+# force update of config.php link 
+rm -f /opt/websvn/include/config.php
+ln -s /config/websvn/config.php /opt/websvn/include/config.php

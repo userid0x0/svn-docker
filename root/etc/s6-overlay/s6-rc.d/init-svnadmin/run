@@ -1,0 +1,37 @@
+#!/command/with-contenv sh
+# Create folders and symlinks for iF.SVNAdmin
+
+# /config/svnadmin: persistent storage for iF.SVNAdmin data
+if [ ! -d /config/svnadmin ]; then
+  install -d -o abc -g abc /config/svnadmin
+fi
+
+lsiown -R abc:abc /config/svnadmin
+
+# create symlink to persistent storage
+if [ ! -e /opt/svnadmin/data ]; then
+  ln -s /config/svnadmin /opt/svnadmin/data
+fi
+
+# copy default configuration if not yet existing e.g. initial start
+if [ ! -f /opt/svnadmin/data/config.ini ]; then
+  install -o abc -g abc /defaults/svnadmin/config.ini /opt/svnadmin/data/config.ini
+fi
+
+if [ ! -f /opt/svnadmin/data/userroleassignments.ini ]; then
+  install -o abc -g abc /defaults/svnadmin/userroleassignments.ini /opt/svnadmin/data/userroleassignments.ini
+fi
+
+if [ ! -f /opt/svnadmin/data/config.tpl.ini ]; then
+  install -o abc -g abc /defaults/svnadmin/config.tpl.ini /opt/svnadmin/data/config.tpl.ini
+fi
+
+# create .htaccess file for data folder
+if [ ! -f /opt/svnadmin/data/.htaccess ]; then
+  cat << EOF > /opt/svnadmin/data/.htaccess
+<Files *>
+  deny from all
+</Files>
+EOF
+  chown abc:abc /opt/svnadmin/data/.htaccess
+fi

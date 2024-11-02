@@ -1,0 +1,41 @@
+#!/command/with-contenv sh
+# Create base folder for repos-style svn client config
+# intentionally empty folder
+
+# returns 0 in case of non-int
+# int(){ printf '%d' ${1:-} 2>/dev/null || :; }
+# returns [empty_string] in case of non-int
+int(){ expr 0 + ${1:-} 2>/dev/null||:; }
+
+# create a dummy config dir
+# required by repos-web/open/log/index.php
+rm -rf /tmp/repos-style
+mkdir -p /tmp/repos-style
+
+case $(int ${SVN_SERVER_REPOS_STYLE_AUTH}) in
+0 | 1 | 2)
+    # valid values, nothing todo
+    ;;
+*)
+    echo "Error: invalid value SVN_SERVER_REPOS_STYLE_AUTH='${SVN_SERVER_REPOS_STYLE_AUTH}'"
+    echo "Info: disable ReposStyle XSLT"
+    exit 1
+    ;;
+esac
+
+# enable apache authentification IF SVN_SERVER_REPOS_STYLE_AUTH >= 1
+if [ $(int ${SVN_SERVER_REPOS_STYLE_AUTH}) -ge 1 ]; then
+  cat << EOF > /etc/apache2/conf.d/reposstyle_auth.conf
+<Location /repos-web/open/log>
+    AuthType Basic
+    AuthName "Subversion Repository"
+    AuthUserFile /data/subversion/passwd
+    Require valid-user
+</Location>
+EOF
+fi
+
+# create link in htdocs
+if [ ! -e /var/www/localhost/htdocs/repos-web ]; then
+  ln -s /opt/repos-style/repos-web /var/www/localhost/htdocs/repos-web
+fi

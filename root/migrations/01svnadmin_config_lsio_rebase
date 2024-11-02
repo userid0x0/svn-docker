@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv sh
+
+CONFIG_FILE="/config/svnadmin/config.ini"
+
+[ ! -f "${CONFIG_FILE}" ] && exit 0
+
+echo "migrate '${CONFIG_FILE}' - path '/data' -> '/config'"
+sed -i '/^SVNUserFile/ s#=/data/#=/config/#' ${CONFIG_FILE}
+sed -i '/^SVNParentPath/ s#=/data/#=/config/#' ${CONFIG_FILE}
+sed -i '/^SVNAuthFile/ s#=/data/#=/config/#' ${CONFIG_FILE}
