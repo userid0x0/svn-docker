@@ -17,6 +17,6 @@ if [ ! -f /config/subversion/passwd ]; then
   install -o abc -g abc /defaults/subversion/passwd /config/subversion/passwd
 fi
 
-if [ ! -f /contig/subversion/subversion-access-control ]; then
+if [ ! -f /config/subversion/subversion-access-control ]; then
   install -o abc -g abc /defaults/subversion/subversion-access-control /config/subversion/subversion-access-control
 fi
