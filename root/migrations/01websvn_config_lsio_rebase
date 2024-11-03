@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv sh
+
+CONFIG_FILE="/config/websvn/config.php"
+
+[ ! -f "${CONFIG_FILE}" ] && exit 0
+
+echo "migrate '${CONFIG_FILE}' - path '/data' -> '/config'"
+sed -i '/parentPath/ s#/data/repositories#/config/repositories#' ${CONFIG_FILE}
+sed -i '/useAccessFile/ s#/data/subversion#/config/subversion#' ${CONFIG_FILE}
