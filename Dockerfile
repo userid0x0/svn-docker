@@ -1,5 +1,5 @@
 # Alpine Linux with s6 service management
-FROM ghcr.io/linuxserver/baseimage-alpine:3.20
+FROM ghcr.io/linuxserver/baseimage-alpine:3.21
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
