@@ -20,7 +20,8 @@ Starting tag `v3.20-lsio` the volume mount moved from `/data` to `/config`. Plea
 
 ## Tags
 - `latest` latest version
-- `v3.21-lsio` based on linuxserver.io baseimage / Alpine Linux 3.20
+- `v3.22-lsio` based on linuxserver.io baseimage / Alpine Linux 3.22
+- `v3.21-lsio` based on linuxserver.io baseimage / Alpine Linux 3.21
 - `v3.20-lsio` based on linuxserver.io baseimage / Alpine Linux 3.20
 - `v3.20` based on Alpine Linux 3.20
 - `v3.19` based on Alpine Linux 3.19
