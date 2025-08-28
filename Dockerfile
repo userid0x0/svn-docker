@@ -2,7 +2,7 @@
 FROM ghcr.io/linuxserver/baseimage-alpine:3.22
 
 # Install Apache2 and other stuff needed to access svn via WebDav
-# Install svn
+# Install svn 
 # Installing utilities for SVNADMIN frontend
 # Enable global .htaccess (AllowOverride All)
 # Enable LDAP for PHP
