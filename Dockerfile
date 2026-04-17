@@ -1,5 +1,5 @@
 # Alpine Linux with s6 service management
-FROM ghcr.io/linuxserver/baseimage-alpine:3.22
+FROM ghcr.io/linuxserver/baseimage-alpine:3.23
 
 # Install Apache2 and other stuff needed to access svn via WebDav
 # Install svn
@@ -30,7 +30,7 @@ RUN ln -s /opt/svnadmin /var/www/localhost/htdocs/svnadmin \
 
 # Prepare WebSVN
 ADD --chown=abc:abc \
-	https://github.com/websvnphp/websvn.git#2.8.4 \
+	https://github.com/websvnphp/websvn.git#2.8.7 \
 	/opt/websvn
 
 # Prepare ReposStyle XSLT
